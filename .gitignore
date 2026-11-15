@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ipynb_checkpoints/
+*.egg-info/
+# generated artefacts (re-create with the CLI)
+models/*/
+data/raw/*/
+!data/raw/.gitkeep
+!models/.gitkeep

@@ -1,0 +1,59 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "1) Generate demo data",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "canteen_ai",
+      "args": ["generate-data", "--college", "demo_college"],
+      "console": "integratedTerminal",
+      "env": { "PYTHONPATH": "${workspaceFolder}/src" }
+    },
+    {
+      "name": "2) Train model",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "canteen_ai",
+      "args": ["train", "--college", "demo_college"],
+      "console": "integratedTerminal",
+      "env": { "PYTHONPATH": "${workspaceFolder}/src" }
+    },
+    {
+      "name": "2b) Train model (fast, fewer tuning rounds)",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "canteen_ai",
+      "args": ["train", "--college", "demo_college", "--fast"],
+      "console": "integratedTerminal",
+      "env": { "PYTHONPATH": "${workspaceFolder}/src" }
+    },
+    {
+      "name": "3) Forecast next 3 days",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "canteen_ai",
+      "args": ["forecast", "--college", "demo_college", "--days", "3"],
+      "console": "integratedTerminal",
+      "env": { "PYTHONPATH": "${workspaceFolder}/src" }
+    },
+    {
+      "name": "4) Dashboard (Streamlit)",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "streamlit",
+      "args": ["run", "app/streamlit_app.py"],
+      "console": "integratedTerminal",
+      "env": { "PYTHONPATH": "${workspaceFolder}/src" }
+    },
+    {
+      "name": "Run tests",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "pytest",
+      "args": ["-q"],
+      "console": "integratedTerminal",
+      "env": { "PYTHONPATH": "${workspaceFolder}/src" }
+    }
+  ]
+}

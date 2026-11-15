@@ -1,0 +1,80 @@
+# =============================================================================
+#  College configuration
+#  -----------------------------------------------------------------------------
+#  Everything that differs between colleges lives in this one file (+ the CSVs in
+#  data/raw/<college_id>/). Nothing in the Python code is hard-coded to a college.
+#  To add a new college:   python -m canteen_ai onboard --college-id my_college
+# =============================================================================
+college_id: prajwal_uni
+name: prajwal uni
+
+location:
+  latitude: 18.52          # used to fetch the weather forecast (Open-Meteo, free, no key)
+  longitude: 73.86
+  timezone: Asia/Kolkata
+
+total_students: 10000         # enrolled students (also used by the demo-data simulator)
+
+# Meal slots the canteen serves (24h HH:MM). Add / remove / rename freely (lower-case names).
+meals:
+  breakfast: {start: "08:00", end: "10:00"}
+  lunch:     {start: "12:30", end: "14:30"}
+  snacks:    {start: "16:00", end: "18:00"}
+
+# Calendar events the model understands. Dates go in data/raw/<college_id>/events.csv
+event_types: [exam, holiday, vacation, fest, placement_drive, special_menu]
+
+forecast:
+  holdout_days: 60           # last N days kept aside to honestly test the model
+  interval: [0.10, 0.90]     # "likely range" shown to the canteen = 10th..90th percentile
+  safety_quantile: 0.80      # "cook for" number = 80th percentile (fewer shortages, a bit of leftover)
+
+planning:
+  wastage_buffer: 0.05       # extra 5% ingredients on top of the recipe quantities
+
+# What each person (who walks in for that meal) typically orders.
+# portions_per_head = expected portions of that dish per footfall.
+menu:
+  breakfast:
+    - {dish: Poha,         portions_per_head: 0.30}
+    - {dish: Idli Sambar,  portions_per_head: 0.25}
+    - {dish: Upma,         portions_per_head: 0.12}
+    - {dish: Sandwich,     portions_per_head: 0.18}
+    - {dish: Tea,          portions_per_head: 0.85}
+  lunch:
+    - {dish: Veg Thali,       portions_per_head: 0.40}
+    - {dish: Dal Rice,        portions_per_head: 0.20}
+    - {dish: Chapati Sabzi,   portions_per_head: 0.18}
+    - {dish: Fried Rice,      portions_per_head: 0.15}
+    - {dish: Paneer Roll,     portions_per_head: 0.08}
+  snacks:
+    - {dish: Samosa,      portions_per_head: 0.30}
+    - {dish: Vada Pav,    portions_per_head: 0.35}
+    - {dish: Sandwich,    portions_per_head: 0.15}
+    - {dish: Tea,         portions_per_head: 0.55}
+    - {dish: Maggi,       portions_per_head: 0.12}
+
+# Ingredients per ONE portion: ingredient: [quantity, unit]
+recipes:
+  Poha:          {poha_flakes: [0.08, kg], onion: [0.02, kg], peanuts: [0.01, kg], oil: [0.005, l]}
+  Idli Sambar:   {idli_batter: [0.15, kg], toor_dal: [0.02, kg], mixed_veg: [0.04, kg], oil: [0.003, l]}
+  Upma:          {rava: [0.07, kg], onion: [0.02, kg], oil: [0.006, l]}
+  Sandwich:      {bread: [0.08, kg], butter: [0.01, kg], mixed_veg: [0.03, kg]}
+  Tea:           {milk: [0.10, l], sugar: [0.012, kg], tea_powder: [0.003, kg]}
+  Veg Thali:     {rice: [0.12, kg], wheat_flour: [0.08, kg], toor_dal: [0.04, kg], mixed_veg: [0.15, kg], oil: [0.02, l]}
+  Dal Rice:      {rice: [0.15, kg], toor_dal: [0.06, kg], oil: [0.01, l]}
+  Chapati Sabzi: {wheat_flour: [0.10, kg], mixed_veg: [0.15, kg], oil: [0.015, l]}
+  Fried Rice:    {rice: [0.15, kg], mixed_veg: [0.08, kg], oil: [0.02, l]}
+  Paneer Roll:   {paneer: [0.06, kg], wheat_flour: [0.07, kg], onion: [0.03, kg], oil: [0.01, l]}
+  Samosa:        {potato: [0.06, kg], maida: [0.04, kg], oil: [0.04, l]}
+  Vada Pav:      {potato: [0.08, kg], besan: [0.03, kg], pav: [1, pcs], oil: [0.03, l]}
+  Maggi:         {noodles: [0.07, kg], mixed_veg: [0.03, kg]}
+
+# ONLY used by `generate-data` (the demo-data simulator). Ignored when you use real data.
+synthetic:
+  seed: 42
+  hostel_ratio: 0.55         # share of students living on campus
+  eat_prob:                  # chance that a present student eats at the canteen in that meal
+    breakfast: {hostel: 0.12, day: 0.10}
+    lunch:     {hostel: 0.18, day: 0.45}
+    snacks:    {hostel: 0.30, day: 0.30}
